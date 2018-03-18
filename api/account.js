@@ -29,7 +29,7 @@ module.exports.addUser = function(req, res) {
     var fileName = post.filename;
 
     if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif" ) {
-        file.mv('images/' + fileName, function(err) {
+        file.mv('assets/images/' + fileName, function(err) {
             if (err) return res.status(500).send(err);
             var values = [
                 [id, email, password, name, fileName, phone, about, skills]
@@ -58,10 +58,9 @@ module.exports.updateUser = function (req, res) {
     }
     var data = Object.assign({}, data, req.body);
     if (req.files) {
-        console.log('lalala');
         var file = req.files.file;
         if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/gif") {
-            file.mv('images/' + data.filename, function (err) {
+            file.mv('assets/images/' + data.filename, function (err) {
                 if (err) {
                     return res.status(500).send(err);
                 } else {
