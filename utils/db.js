@@ -22,3 +22,15 @@ module.exports.fetchData = function(sql, values, callback) {
     });
     connection.end();
 }
+
+module.exports.updateDate = function (sql, values, callback) {
+    var connection = getConnection();
+    connection.query(sql, values, function(err, rows, fields) {
+        if(err) {
+            console.log("ERROR: " + err.message);
+        } else {
+            callback(err, rows[0]);
+        }
+    });
+    connection.end();
+}

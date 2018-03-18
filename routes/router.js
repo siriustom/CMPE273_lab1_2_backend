@@ -6,8 +6,6 @@ router.post('/login', account.auth);
 
 router.post('/register', account.addUser);
 
-router.post('/profileEdit', function (req, res) {
-    
-});
+router.post('/profileEdit', account.updateUser);
 
 module.exports = router;
