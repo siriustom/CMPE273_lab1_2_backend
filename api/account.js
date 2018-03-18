@@ -16,10 +16,6 @@ module.exports.addUser = function(req, res) {
     console.log('user has register');
     var id = Math.floor(Math.random() * 1000000);
     var sql = "INSERT INTO account (id, email, password, name, image, phone, about_me, skills) VALUES ?";
-    // +
-    // "( '" +
-    // id + "'" + " , " + "'" + req.body.email + "'" + " , " + "'" + req.body.password + "'" +
-    // " , " + "'" + req.body.name + "'" + ")";
     var post = req.body;
     console.log(post);
     var email = post.email;
@@ -61,15 +57,18 @@ module.exports.updateUser = function (req, res) {
         skills: ''
     }
     var data = Object.assign({}, data, req.body);
-    var file = req.files.file;
-    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif" ) {
-        file.mv('images/' + data.filename, function(err) {
-            if (err) {
-                return res.status(500).send(err);
-            } else {
-                console.log('updated file uploaded.');
-            }
-        });
+    if (req.files) {
+        console.log('lalala');
+        var file = req.files.file;
+        if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/gif") {
+            file.mv('images/' + data.filename, function (err) {
+                if (err) {
+                    return res.status(500).send(err);
+                } else {
+                    console.log('updated file uploaded.');
+                }
+            });
+        }
     }
     var sql = 'UPDATE account SET email = ?, password = ?, name = ?, image = ?, phone = ?, about_me = ?, skills = ? WHERE id = ?';
     var values = [data.email, data.password, data.name, data.filename, data.phone, data.about, data.skills, data.id];
