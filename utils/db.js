@@ -40,3 +40,21 @@ module.exports.updateDate = function (sql, values, callback) {
         }
     })
 }
+
+module.exports.fetchAllData = function(sql, values, callback) {
+    // var connection = getConnection();
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log("ERROR: " + err.message);
+        } else {
+            connection.query(sql, [values], function(err, rows, fields) {
+                if(err) {
+                    console.log("ERROR: " + err.message);
+                } else {
+                    callback(err, rows);
+                }
+            });
+        }
+
+    });
+}

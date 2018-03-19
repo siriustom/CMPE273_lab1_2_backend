@@ -36,5 +36,11 @@ module.exports.postproject = function(req, res) {
 }
 
 module.exports.getAllProjects = function(req, res) {
-
+    console.log('user has get all projects');
+    var today = (new Date()).getTime();
+    var sql = "SELECT * FROM project WHERE Period > " + "'" + today + "'";
+    dbUtil.fetchAllData(sql, [], function (err, result, fields) {
+        if (err) throw err;
+        res.json(JSON.stringify(result));
+    });
 }

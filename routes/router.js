@@ -11,6 +11,6 @@ router.post('/profileEdit', account.updateUser);
 
 router.post('/postproject', projects.postproject);
 
-router.get('/projects', projects.getAllProjects);
+router.post('/projects', projects.getAllProjects);
 
 module.exports = router;

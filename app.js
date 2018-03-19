@@ -8,9 +8,8 @@ var fileUpload = require('express-fileupload');
 
 var app = express();
 var port = 4200;
-
-app.use(express.static('assets'));
 app.use(cors());
+app.use(express.static('assets'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,3 +21,4 @@ app.use('/', router);
 app.listen(port, function(){
     console.log('hello world');
 });
+
