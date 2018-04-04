@@ -7,7 +7,7 @@ function make_request(topic, payload, callback) {
 
         if (err) {
             console.error(err);
-        } else{
+        } else {
             console.log("response", response);
             callback(null, response);
         }

@@ -3,28 +3,27 @@ var passport = require('passport');
 
 module.exports.auth = function(req, res) {
     console.log('user has post login');
-    var sql = "SELECT * FROM account WHERE email = " + "'" + req.body.email + "'";
-    dbUtil.fetchData(sql, [], function (err, result, fields) {
-        if (err) throw err;
-        if (result.password === req.body.password) {
-            res.json(JSON.stringify(result));
+    // var sql = "SELECT * FROM account WHERE email = " + "'" + req.body.email + "'";
+    // dbUtil.fetchData(sql, [], function (err, result, fields) {
+    //     if (err) throw err;
+    //     if (result.password === req.body.password) {
+    //         res.json(JSON.stringify(result));
+    //     }
+    // });
+    passport.authenticate('login', function(err, user) {
+        if(err) {
+            res.status(500).send();
         }
-    });
-}
 
-// passport.authenticate('login', function(err, user) {
-//     if(err) {
-//         res.status(500).send();
-//     }
-//
-//     if(!user) {
-//         res.status(401).send();
-//     }
-//     req.session.user = user.username;
-//     console.log(req.session.user);
-//     console.log("session initilized");
-//     return res.status(201).send({username:"test"});
-// })(req, res);
+        if(!user) {
+            res.status(401).send();
+        }
+        req.session.user = user.username;
+        console.log(req.session.user);
+        console.log("session initilized");
+        return res.status(201).send({username:"test"});
+    })(req, res);
+}
 
 module.exports.addUser = function(req, res) {
     console.log('user has register');
