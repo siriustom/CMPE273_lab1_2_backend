@@ -1,7 +1,7 @@
 var dbUtil = require('../utils/db');
 var passport = require('passport');
 
-module.exports.auth = function(req, res) {
+module.exports.auth = function(req, res, next) {
     console.log('user has post login');
     // var sql = "SELECT * FROM account WHERE email = " + "'" + req.body.email + "'";
     // dbUtil.fetchData(sql, [], function (err, result, fields) {
@@ -10,19 +10,22 @@ module.exports.auth = function(req, res) {
     //         res.json(JSON.stringify(result));
     //     }
     // });
-    passport.authenticate('login', function(err, user) {
+    passport.authenticate('local', {session: false}, function(err, user, info) {
         if(err) {
-            res.status(500).send();
+            console.log('err');
+            return next(err);
         }
-
-        if(!user) {
-            res.status(401).send();
+        if (!user) {
+            console.log('failed');
+            return res.json(JSON.stringify({"value": 'hello'}));
         }
-        req.session.user = user.username;
-        console.log(req.session.user);
-        console.log("session initilized");
-        return res.status(201).send({username:"test"});
-    })(req, res);
+        req.logIn(user, {session: false}, function(err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/users/' + user.username);
+        })
+    })(req, res, next);
 }
 
 module.exports.addUser = function(req, res) {

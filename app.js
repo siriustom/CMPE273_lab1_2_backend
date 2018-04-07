@@ -6,9 +6,10 @@ var cors = require('cors');
 var fileUpload = require('express-fileupload');
 var expressSessions = require("express-session");
 var passport = require('passport');
-require('./routes/passport')(passport);
+require('./routes/passport')(passport);//use local strategy to configure passport
 var mongoSessionURL = "mongodb://localhost:27017/sessions";
 var mongoStore = require("connect-mongo")(expressSessions);
+var LocalStrategy = require("passport-local").Strategy;
 
 var app = express();
 var port = 4200;
@@ -34,12 +35,15 @@ app.use(expressSessions({
         url: mongoSessionURL
     })
 }));
-app.use(passport.initialize());
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(fileUpload());
 
 app.use('/', router);
 
 app.listen(port, function(){
-    console.log('hello world');
+    console.log('express backend is listening');
 });
 
