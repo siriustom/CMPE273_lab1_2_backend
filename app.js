@@ -5,11 +5,11 @@ var path = require('path');
 var cors = require('cors');
 var fileUpload = require('express-fileupload');
 var expressSessions = require("express-session");
-var passport = require('passport');
-require('./routes/passport')(passport);//use local strategy to configure passport
 var mongoSessionURL = "mongodb://localhost:27017/sessions";
 var mongoStore = require("connect-mongo")(expressSessions);
-var LocalStrategy = require("passport-local").Strategy;
+var User = require('./models/user');
+var passport = require('passport');
+require('./routes/passport')(passport);
 
 var app = express();
 var port = 4200;
@@ -37,9 +37,20 @@ app.use(expressSessions({
 }));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
-// app.use(passport.initialize());
+app.use(passport.initialize());
 // app.use(passport.session());
 app.use(fileUpload());
+
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.getUserById(id, function(err, user) {
+        done(err, user);
+    });
+});
 
 app.use('/', router);
 

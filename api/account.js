@@ -1,5 +1,6 @@
 var dbUtil = require('../utils/db');
 var passport = require('passport');
+var User = require('../models/user');
 
 module.exports.auth = function(req, res, next) {
     console.log('user has post login');
@@ -10,22 +11,24 @@ module.exports.auth = function(req, res, next) {
     //         res.json(JSON.stringify(result));
     //     }
     // });
-    passport.authenticate('local', {session: false}, function(err, user, info) {
-        if(err) {
-            console.log('err');
-            return next(err);
-        }
-        if (!user) {
-            console.log('failed');
-            return res.json(JSON.stringify({"value": 'hello'}));
-        }
-        req.logIn(user, {session: false}, function(err) {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect('/users/' + user.username);
-        })
-    })(req, res, next);
+
+    // passport.authenticate('local', {session: false}, function(err, user, info) {
+    //     if(err) {
+    //         console.log('err');
+    //         return next(err);
+    //     }
+    //     if (!user) {
+    //         console.log('failed user');
+    //         return next(new Error('no such user'));
+    //     }
+    //     // req.logIn(user, {session: false}, function(err) {
+    //     //     if (err) {
+    //     //         return next(err);
+    //     //     }
+    //     //     return res.redirect('/users/' + user.username);
+    //     // })
+    // })(req, res, next);
+    res.json(JSON.stringify({status: 'ok'}));
 }
 
 module.exports.addUser = function(req, res) {
@@ -46,14 +49,29 @@ module.exports.addUser = function(req, res) {
 
     if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif" ) {
         file.mv('assets/images/' + fileName, function(err) {
+
             if (err) return res.status(500).send(err);
-            var values = [
-                [id, email, password, name, fileName, phone, about, skills]
-            ];
-            dbUtil.fetchData(sql, values, function(err, result, fields) {
-                if (err) throw err;
-                res.send(fileName);
+            // var values = [
+            //     [id, email, password, name, fileName, phone, about, skills]
+            // ];
+            // dbUtil.fetchData(sql, values, function(err, result, fields) {
+            //     if (err) throw err;
+            //     res.send(fileName);
+            // });
+            var newUser = new User({
+                email: email,
+                password: password,
+                name: name,
+                phone: phone,
+                about: about,
+                skills: skills,
+                fileName: fileName
             });
+
+            User.createUser(newUser, function(err, user) {
+                if (err) throw err;
+                console.log(user);
+            })
         });
     } else {
         var message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";

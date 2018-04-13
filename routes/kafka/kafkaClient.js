@@ -1,4 +1,4 @@
-var conn = require('./kafkaConnection');
+var conn = require('./kafkaConnection').kafkaConnection();
 var crypto = require('crypto');
 
 
@@ -57,7 +57,22 @@ function KafkaClient() {
         console.log('there is not a response queue');
 
         //subscription
-        var consumer = this.connection.getConsumer('response');
+        var consumer = this.connection.getConsumer('login');
+        consumer.on('error', function (err) {
+            console.log(err);
+        });
+        consumer.on('offsetOutOfRange', function (topic) {
+            topic.maxNum = 2;
+            console.log('offset out of range');
+            var offset = self.connection.getOffset();
+            offset.fetch([topic], function (err, offsets) {
+                if (err) {
+                    return console.error(err);
+                }
+                var min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
+                consumer.setOffset(topic.topic, topic.partition, min);
+            });
+        });
         consumer.on('message', function (message) {
             console.log('message received');
             var data = JSON.parse(message.value);

@@ -1,5 +1,6 @@
 var kafka = require('kafka-node');
-var kafkaConnection = (function() {
+
+module.exports.kafkaConnection = function() {
      var getConsumer = function (topic) {
         if (!this.kafkaConsumer) {
             this.client = new kafka.Client("localhost:2181");//a client connection to zookeeper and brokers
@@ -21,9 +22,17 @@ var kafkaConnection = (function() {
         return this.kafkaProducer;
     };
 
+    var getOffset = function () {
+        if (! this.kafkaOffset) {
+            this.client = new kafka.Client("localhost:2181");//a client connection to zookeeper and brokers
+            this.kafkaOffset = new kafka.Offset(this.client);
+        }
+        return this.kafkaOffset;
+    };
+
     return {
         getConsumer: getConsumer,
         getProducer: getProducer,
+        getOffset: getOffset
     }
-})();
-exports = module.exports = kafkaConnection;
+};

@@ -3,8 +3,12 @@ var router = express.Router();
 var account = require('../api/account');
 var projects = require('../api/projects');
 var bids = require('../api/bids');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('../models/user');
 
-router.post('/login', account.auth);
+
+router.post('/login', passport.authenticate('local'), account.auth);
 
 router.post('/register', account.addUser);
 
