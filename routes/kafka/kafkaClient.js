@@ -57,7 +57,7 @@ function KafkaClient() {
         console.log('there is not a response queue');
 
         //subscription
-        var consumer = this.connection.getConsumer('login');
+        var consumer = this.connection.getConsumer('response');
         consumer.on('error', function (err) {
             console.log(err);
         });

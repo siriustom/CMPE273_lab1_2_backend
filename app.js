@@ -17,7 +17,7 @@ app.use(express.static('assets'));
 
 var corsOptions = {
     origin: 'http://localhost:3000',
-    credentials: true,
+    credentials: true
 }
 
 app.use(cors(corsOptions));
@@ -38,7 +38,7 @@ app.use(expressSessions({
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 app.use(fileUpload());
 
 
@@ -48,13 +48,14 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     User.getUserById(id, function(err, user) {
+        console.log('in deserialize getuserbyid');
         done(err, user);
     });
 });
 
 app.use('/', router);
 
-app.listen(port, function(){
+app.listen(port, function() {
     console.log('express backend is listening');
 });
 

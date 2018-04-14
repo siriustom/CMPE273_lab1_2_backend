@@ -4,30 +4,6 @@ var User = require('../models/user');
 
 module.exports.auth = function(req, res, next) {
     console.log('user has post login');
-    // var sql = "SELECT * FROM account WHERE email = " + "'" + req.body.email + "'";
-    // dbUtil.fetchData(sql, [], function (err, result, fields) {
-    //     if (err) throw err;
-    //     if (result.password === req.body.password) {
-    //         res.json(JSON.stringify(result));
-    //     }
-    // });
-
-    // passport.authenticate('local', {session: false}, function(err, user, info) {
-    //     if(err) {
-    //         console.log('err');
-    //         return next(err);
-    //     }
-    //     if (!user) {
-    //         console.log('failed user');
-    //         return next(new Error('no such user'));
-    //     }
-    //     // req.logIn(user, {session: false}, function(err) {
-    //     //     if (err) {
-    //     //         return next(err);
-    //     //     }
-    //     //     return res.redirect('/users/' + user.username);
-    //     // })
-    // })(req, res, next);
     res.json(JSON.stringify({status: 'ok'}));
 }
 

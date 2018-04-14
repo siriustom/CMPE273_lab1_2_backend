@@ -24,8 +24,10 @@ module.exports = function(passport) {
                 console.log('no result: ');
                 return done(null, false);
             }
-            console.log('kafka received normal with username ' + username);
+            console.log('kafka received normal with username ', results);
+
             User.getUserByUsername(username, function (err, user) {
+                console.log('username callback?: ', username);
                 if (err) throw err;
                 if (!user) {
                     return done(null, false, {message: 'Unknown user'});
@@ -43,27 +45,6 @@ module.exports = function(passport) {
             });
         });
     }));
-    // passport.use(new LocalStrategy({
-    //         usernameField: 'email',
-    //         passwordField: 'password'
-    //     }, function(username, password, done) {
-    //         User.getUserByUsername(username, function (err, user) {
-    //             if (err) throw err;
-    //             if (!user) {
-    //                 return done(null, false, {message: 'Unknown user'});
-    //             }
-    //             User.comparePassword(password, user.password, function (err, isMatch) {
-    //                 if (err) throw err;
-    //                 if (isMatch) {
-    //                     return done(null, user);
-    //                 } else {
-    //                     return done(null, false, {message: 'Invalid password'});
-    //                 }
-    //             })
-    //         })
-    //     }
-    // ));
-
 };
 
 
