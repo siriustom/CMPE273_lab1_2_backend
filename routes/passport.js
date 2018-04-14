@@ -25,24 +25,7 @@ module.exports = function(passport) {
                 return done(null, false);
             }
             console.log('kafka received normal with username ', results);
-
-            User.getUserByUsername(username, function (err, user) {
-                console.log('username callback?: ', username);
-                if (err) throw err;
-                if (!user) {
-                    return done(null, false, {message: 'Unknown user'});
-                }
-                User.comparePassword(password, user.password, function (err, isMatch) {
-                    if (err) throw err;
-                    if (isMatch) {
-                        console.log('ismatch');
-                        return done(null, user);
-                    } else {
-                        console.log('isnotmatch');
-                        return done(null, false, {message: 'Invalid password'});
-                    }
-                })
-            });
+            return done(null, results);
         });
     }));
 };

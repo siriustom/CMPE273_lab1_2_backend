@@ -43,12 +43,11 @@ app.use(fileUpload());
 
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
     User.getUserById(id, function(err, user) {
-        console.log('in deserialize getuserbyid');
         done(err, user);
     });
 });
