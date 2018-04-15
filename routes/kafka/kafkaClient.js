@@ -2,7 +2,7 @@ var conn = require('./kafkaConnection').kafkaConnection();
 var crypto = require('crypto');
 
 
-var TIMEOUT = 8000;
+var TIMEOUT = 800000;
 module.exports = new KafkaClient;
 var self;
 
