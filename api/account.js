@@ -1,5 +1,6 @@
 var dbUtil = require('../utils/db');
 var passport = require('passport');
+var kafka = require('../routes/kafka/kafkaClient');
 
 module.exports.auth = function(req, res, next) {
     console.log('user has post login');
@@ -21,9 +22,8 @@ module.exports.addUser = function(req, res) {
         fileName: post.filename
     }
 
-    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif" ) {
+    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif") {
         file.mv('assets/images/' + fileName, function(err) {
-
             if (err) return res.status(500).send(err);
 
             kafka.makeRequest('register', content, function (error, results) {
