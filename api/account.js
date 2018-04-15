@@ -9,45 +9,51 @@ module.exports.auth = function(req, res, next) {
 
 module.exports.addUser = function(req, res) {
     console.log('user has register');
-    var id = Math.floor(Math.random() * 1000000);
-    var sql = "INSERT INTO account (id, email, password, name, image, phone, about_me, skills) VALUES ?";
     var post = req.body;
     console.log(post);
-    var email = post.email;
-    var password = post.password;
-    var name = post.name;
-    var file = req.files.file;
-    var phone = post.phone;
-    var about = post.about;
-    var skills = post.skills;
-
-    var fileName = post.filename;
+    var content = {
+        email: post.email,
+        password: post.password,
+        name: post.name,
+        file: req.files.file,//uploaded file
+        phone: post.phone,
+        about: post.about,
+        skills: post.skills,
+        fileName: post.filename
+    }
 
     if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif" ) {
         file.mv('assets/images/' + fileName, function(err) {
 
             if (err) return res.status(500).send(err);
-            // var values = [
-            //     [id, email, password, name, fileName, phone, about, skills]
-            // ];
-            // dbUtil.fetchData(sql, values, function(err, result, fields) {
-            //     if (err) throw err;
-            //     res.send(fileName);
-            // });
-            var newUser = new User({
-                email: email,
-                password: password,
-                name: name,
-                phone: phone,
-                about: about,
-                skills: skills,
-                fileName: fileName
-            });
 
-            User.createUser(newUser, function(err, user) {
-                if (err) throw err;
-                console.log(user);
+            kafka.makeRequest('register', content, function (error, results) {
+                if (error) {
+                    console.log('err: ', error);
+                    return res.send("error happened when post project");
+                }
+                console.log('results from kafka: ', results);
+                if (!results) {
+                    console.log('no result after post project');
+                    return res.send('db query return no result');
+                }
+                console.log('kafka received normal with project ', results);
+                return res.send('project has been posted');
             })
+            // var newUser = new User({
+            //     email: email,
+            //     password: password,
+            //     name: name,
+            //     phone: phone,
+            //     about: about,
+            //     skills: skills,
+            //     fileName: fileName
+            // });
+            //
+            // User.createUser(newUser, function(err, user) {
+            //     if (err) throw err;
+            //     console.log(user);
+            // })
         });
     } else {
         var message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
