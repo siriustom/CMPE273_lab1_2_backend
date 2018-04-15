@@ -4,7 +4,6 @@ var kafka = require('../routes/kafka/kafkaClient');
 module.exports.postproject = function(req, res) {
     console.log('user has post project');
     var post = req.body;
-    console.log(post);
     var fileName = post.filename;
     var content = {
         userId: post.userId,
@@ -19,7 +18,8 @@ module.exports.postproject = function(req, res) {
         bidNumber: "",
         bidNow: ""
     }
-        var fileName = post.filename;
+    console.log(content);
+    var fileName = post.filename;
     var file = req.files.file;
     if(file.mimetype === "application/pdf" ) {
         file.mv('assets/projects/' + fileName, function(err) {
