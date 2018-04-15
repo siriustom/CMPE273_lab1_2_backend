@@ -2,7 +2,7 @@ var conn = require('./kafkaConnection').kafkaConnection();
 var crypto = require('crypto');
 
 
-var TIMEOUT = 800000;
+var TIMEOUT = 8000;
 module.exports = new KafkaClient;
 var self;
 
@@ -57,7 +57,7 @@ function KafkaClient() {
         console.log('there is not a response queue');
 
         //subscription
-        var consumer = this.connection.getConsumer(topic+"Reply");
+        var consumer = this.connection.getConsumer();
         consumer.on('error', function (err) {
             console.log(err);
         });
