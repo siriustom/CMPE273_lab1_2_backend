@@ -11,6 +11,7 @@ module.exports.addUser = function(req, res) {
     console.log('user has register');
     var post = req.body;
     console.log(post);
+    var fileName = post.filename;
     var content = {
         email: post.email,
         password: post.password,
@@ -19,7 +20,7 @@ module.exports.addUser = function(req, res) {
         phone: post.phone,
         about: post.about,
         skills: post.skills,
-        fileName: post.filename
+        fileName: fileName,
     }
 
     if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif") {
