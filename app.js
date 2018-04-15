@@ -16,7 +16,7 @@ var port = 4200;
 app.use(express.static('assets'));
 
 var corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://34.209.33.250:3000',
     credentials: true
 }
 
