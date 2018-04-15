@@ -20,6 +20,6 @@ router.post('/projects', projects.getAllProjects);
 
 router.post('/bid', bids.bidOnProject);
 
-router.post('/getbidlist', bids.getBidList);
+// router.post('/getbidlist', bids.getBidList);
 
 module.exports = router;
