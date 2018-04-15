@@ -1,6 +1,5 @@
 var dbUtil = require('../utils/db');
 var passport = require('passport');
-var User = require('../models/user');
 
 module.exports.auth = function(req, res, next) {
     console.log('user has post login');
@@ -40,20 +39,6 @@ module.exports.addUser = function(req, res) {
                 console.log('kafka received normal with project ', results);
                 return res.send('project has been posted');
             })
-            // var newUser = new User({
-            //     email: email,
-            //     password: password,
-            //     name: name,
-            //     phone: phone,
-            //     about: about,
-            //     skills: skills,
-            //     fileName: fileName
-            // });
-            //
-            // User.createUser(newUser, function(err, user) {
-            //     if (err) throw err;
-            //     console.log(user);
-            // })
         });
     } else {
         var message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
