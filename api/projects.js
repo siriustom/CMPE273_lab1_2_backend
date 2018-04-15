@@ -3,9 +3,6 @@ var kafka = require('../routes/kafka/kafkaClient');
 
 module.exports.postproject = function(req, res) {
     console.log('user has post project');
-    // var id = Math.floor(Math.random() * 1000000);
-    // var sql = "INSERT INTO project (id, UserId, Name, Description, Period, SkillsRequired, Employer, " +
-    //     "BudgetRange, File) VALUES ?";
     var post = req.body;
     console.log(post);
     var content = {
@@ -24,13 +21,6 @@ module.exports.postproject = function(req, res) {
     if(file.mimetype === "application/pdf" ) {
         file.mv('assets/projects/' + fileName, function(err) {
             if (err) return res.status(500).send(err);
-            // var values = [
-            //     [id, userId, title, des, period, skillReq, name, budget, fileName]
-            // ];
-            // dbUtil.fetchData(sql, values, function(err, result, fields) {
-            //     if (err) throw err;
-            //     res.send(fileName);
-            // });
         });
     } else {
         var message = "This format is not allowed , please upload file with '.pdf' ";
