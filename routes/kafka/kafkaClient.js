@@ -32,7 +32,7 @@ function KafkaClient() {
                 {   topic: topic,
                     messages: JSON.stringify({
                         correlationId: correlationId,
-                        replyTo: 'response',
+                        replyTo: topic+"Reply",
                         data: content
                     }),
                     partition: 0
@@ -57,7 +57,7 @@ function KafkaClient() {
         console.log('there is not a response queue');
 
         //subscription
-        var consumer = this.connection.getConsumer('response');
+        var consumer = this.connection.getConsumer(topic+"Reply");
         consumer.on('error', function (err) {
             console.log(err);
         });

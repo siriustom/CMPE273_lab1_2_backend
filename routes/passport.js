@@ -1,7 +1,6 @@
 var LocalStrategy = require("passport-local").Strategy;
 
 var kafka = require('./kafka/kafkaClient');
-var User = require('../models/user');
 //before authenticate, strategy must be configured
 module.exports = function(passport) {
     passport.use(new LocalStrategy({
@@ -17,7 +16,7 @@ module.exports = function(passport) {
         kafka.makeRequest('login', content, function(err, results) {
             console.log('in result');
             if (err) {
-                console.log('err: ' + err);
+                console.log('err: ', err);
                 return done(err);
             }
             if (!results) {

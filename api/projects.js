@@ -1,38 +1,54 @@
 var dbUtil = require('../utils/db');
+var kafka = require('../routes/kafka/kafkaClient');
 
 module.exports.postproject = function(req, res) {
     console.log('user has post project');
-    var id = Math.floor(Math.random() * 1000000);
-    var sql = "INSERT INTO project (id, UserId, Name, Description, Period, SkillsRequired, Employer, " +
-        "BudgetRange, File) VALUES ?";
+    // var id = Math.floor(Math.random() * 1000000);
+    // var sql = "INSERT INTO project (id, UserId, Name, Description, Period, SkillsRequired, Employer, " +
+    //     "BudgetRange, File) VALUES ?";
     var post = req.body;
     console.log(post);
-    var userId = post.userId;
-    var name = post.name;
-    var file = req.files.file;
-    var title = post.title;
-    var des = post.des;
-    var skillReq = post.skillReq;
-    var budget = post.budget;
-    var period = post.period;
+    var content = {
+        userId: post.userId,
+        name: post.name,
+        title: post.title,
+        des: post.des,
+        skillReq: post.skillReq,
+        budget: post.budget,
+        period: post.period
+    }
 
     var fileName = post.filename;
 
+    var file = req.files.file;
     if(file.mimetype === "application/pdf" ) {
         file.mv('assets/projects/' + fileName, function(err) {
             if (err) return res.status(500).send(err);
-            var values = [
-                [id, userId, title, des, period, skillReq, name, budget, fileName]
-            ];
-            dbUtil.fetchData(sql, values, function(err, result, fields) {
-                if (err) throw err;
-                res.send(fileName);
-            });
+            // var values = [
+            //     [id, userId, title, des, period, skillReq, name, budget, fileName]
+            // ];
+            // dbUtil.fetchData(sql, values, function(err, result, fields) {
+            //     if (err) throw err;
+            //     res.send(fileName);
+            // });
         });
     } else {
         var message = "This format is not allowed , please upload file with '.pdf' ";
-        res.send(message);
+        return res.send(message);
     }
+
+    kafka.makeRequest('postproject', content, function (err, results) {
+        if (err) {
+            console.log('err: ', err);
+            return res.send("error happened when post project");
+        }
+        if (!results) {
+            console.log('no result after post project');
+            return res.send('db query return no result');
+        }
+        console.log('kafka received normal with project ', results);
+        return res.send('project has been posted');
+    })
 }
 
 module.exports.getAllProjects = function(req, res) {
