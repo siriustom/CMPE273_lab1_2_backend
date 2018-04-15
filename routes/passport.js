@@ -23,8 +23,12 @@ module.exports = function(passport) {
                 console.log('no result: ');
                 return done(null, false);
             }
-            console.log('kafka received normal with username ', results);
-            return done(null, results);
+            console.log('kafka received normal', results);
+            if (results._id) {
+                return done(null, results);
+            } else {
+                return done(null, false);
+            }
         });
     }));
 };
