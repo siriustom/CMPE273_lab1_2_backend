@@ -8,7 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 
 
-router.post('/login', passport.authenticate('local'), account.auth);
+router.post('/login', account.auth);
 
 router.post('/register', account.addUser);
 

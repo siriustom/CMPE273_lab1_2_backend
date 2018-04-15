@@ -4,7 +4,21 @@ var kafka = require('../routes/kafka/kafkaClient');
 
 module.exports.auth = function(req, res, next) {
     console.log('user has post login');
-    res.json(JSON.stringify({status: 'ok'}));
+    passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return next(new Error('no user found'));
+        }
+        req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            return res.json(JSON.stringify({
+                status: 'ok',
+                user: user
+            }));
+        });
+    })(req, res, next);
 }
 
 module.exports.addUser = function(req, res) {
