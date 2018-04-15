@@ -16,14 +16,14 @@ module.exports.addUser = function(req, res) {
         email: post.email,
         password: post.password,
         name: post.name,
-        file: req.files.file,//uploaded file
         phone: post.phone,
         about: post.about,
         skills: post.skills,
         fileName: fileName,
     }
+    var file = req.files.file;//uploaded file
 
-    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif") {
+    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"|| file.mimetype === "image/gif" ) {
         file.mv('assets/images/' + fileName, function(err) {
             if (err) return res.status(500).send(err);
 
