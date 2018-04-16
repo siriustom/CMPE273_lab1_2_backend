@@ -8,7 +8,8 @@ module.exports.kafkaConnection = function() {
                 [
                     { topic: 'loginReply', partition: 0 },
                     { topic: 'postprojectReply', partition: 0 },
-                    { topic: 'registerReply', partition: 0 }
+                    { topic: 'registerReply', partition: 0 },
+                    { topic: 'profileeditReply', partition: 0 }
                 ]);
             this.client.on('ready', function () {
                 console.log('consumer ready!')
