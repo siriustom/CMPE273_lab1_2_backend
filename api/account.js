@@ -48,7 +48,7 @@ module.exports.addUser = function(req, res) {
                 }
                 console.log('results from kafka: ', results);
                 if (!results) {
-                    console.log('no result after registert');
+                    console.log('no result after register');
                     return res.send('db query return no result');
                 }
                 console.log('kafka received normal with register ', results);
@@ -71,25 +71,36 @@ module.exports.updateUser = function (req, res) {
         phone: '',
         about: '',
         skills: ''
-    }
-    var data = Object.assign({}, data, req.body);
+    };
+    var content = Object.assign({}, data, req.body);
     if (req.files) {
         var file = req.files.file;
         if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/gif") {
             file.mv('assets/images/' + data.filename, function (err) {
-                if (err) {
-                    return res.status(500).send(err);
-                } else {
-                    console.log('updated file uploaded.');
-                }
+                kafka.makeRequest('profileedit', content, function (error, results) {
+                    if (error) {
+                        console.log('err: ', error);
+                        return res.send("error happened when update profile");
+                    }
+                    console.log('results from kafka: ', results);
+                    if (!results) {
+                        console.log('no result after update profile');
+                        return res.send('db query return no result');
+                    }
+                    console.log('kafka received normal with profile update ', results);
+                    return res.send('profile has been updated');
+                })
             });
+        } else {
+            var message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
+            res.send(message);
         }
     }
-    var sql = 'UPDATE account SET email = ?, password = ?, name = ?, image = ?, phone = ?, about_me = ?, skills = ? WHERE id = ?';
-    var values = [data.email, data.password, data.name, data.filename, data.phone, data.about, data.skills, data.id];
-    dbUtil.updateDate(sql, values, function (err, result) {
-        if (err) throw err;
-        var success = {status: 'ok'};
-        res.json(JSON.stringify(success));
-    })
+    // var sql = 'UPDATE account SET email = ?, password = ?, name = ?, image = ?, phone = ?, about_me = ?, skills = ? WHERE id = ?';
+    // var values = [data.email, data.password, data.name, data.filename, data.phone, data.about, data.skills, data.id];
+    // dbUtil.updateDate(sql, values, function (err, result) {
+    //     if (err) throw err;
+    //     var success = {status: 'ok'};
+    //     res.json(JSON.stringify(success));
+    // })
 }
