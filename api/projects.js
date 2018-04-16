@@ -58,6 +58,6 @@ module.exports.getAllProjects = function(req, res) {
             return res.send('db query return no result');
         }
         console.log('kafka received normal with allprojects ', results);
-        return res.send('allprojects has been returned');
+        return res.json(JSON.stringify(results));
     })
 }
