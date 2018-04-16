@@ -5,6 +5,7 @@ module.exports.postproject = function(req, res) {
     console.log('user has post project');
     var post = req.body;
     var fileName = post.fileName;
+    var period = (new Date()).getTime() + 24 * 60 * 60 * 1000 * post.period;
     var content = {
         userId: post.userId,
         name: post.name,
@@ -13,7 +14,7 @@ module.exports.postproject = function(req, res) {
         description: post.description,
         skillsRequired: post.skillsRequired,
         budgetRange: post.budgetRange,
-        period: post.period,
+        period: period,
         averageBid: "",
         bidNumber: "",
         bidNow: ""
@@ -60,9 +61,4 @@ module.exports.getAllProjects = function(req, res) {
         console.log('kafka received normal with allprojects ', results);
         return res.send('allprojects has been returned');
     })
-    // var sql = "SELECT * FROM project WHERE Period > " + "'" + today + "'";
-    // dbUtil.fetchAllData(sql, [], function (err, result, fields) {
-    //     if (err) throw err;
-    //     res.json(JSON.stringify(result));
-    // });
 }
