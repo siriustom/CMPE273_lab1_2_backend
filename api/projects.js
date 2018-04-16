@@ -45,9 +45,24 @@ module.exports.postproject = function(req, res) {
 module.exports.getAllProjects = function(req, res) {
     console.log('user has get all projects');
     var today = (new Date()).getTime();
-    var sql = "SELECT * FROM project WHERE Period > " + "'" + today + "'";
-    dbUtil.fetchAllData(sql, [], function (err, result, fields) {
-        if (err) throw err;
-        res.json(JSON.stringify(result));
-    });
+    var content = {
+        today: today
+    }
+    kafka.makeRequest('allprojects', content, function (error, results) {
+        if (error) {
+            console.log('err: ', error);
+            return res.send("error happened when allprojects");
+        }
+        if (!results) {
+            console.log('no result after allprojects');
+            return res.send('db query return no result');
+        }
+        console.log('kafka received normal with allprojects ', results);
+        return res.send('allprojects has been returned');
+    })
+    // var sql = "SELECT * FROM project WHERE Period > " + "'" + today + "'";
+    // dbUtil.fetchAllData(sql, [], function (err, result, fields) {
+    //     if (err) throw err;
+    //     res.json(JSON.stringify(result));
+    // });
 }
