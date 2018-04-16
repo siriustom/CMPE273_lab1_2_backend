@@ -77,23 +77,25 @@ module.exports.updateUser = function (req, res) {
         var file = req.files.file;
         if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/gif") {
             file.mv('assets/images/' + data.filename, function (err) {
-                kafka.makeRequest('profileedit', content, function (error, results) {
-                    if (error) {
-                        console.log('err: ', error);
-                        return res.send("error happened when update profile");
-                    }
-                    console.log('results from kafka: ', results);
-                    if (!results) {
-                        console.log('no result after update profile');
-                        return res.send('db query return no result');
-                    }
-                    console.log('kafka received normal with profile update ', results);
-                    return res.send('profile has been updated');
-                })
+                if (err) return res.status(500).send(err);
+                console.log('file saved.');
             });
         } else {
             var message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
             res.send(message);
         }
     }
+    kafka.makeRequest('profileedit', content, function (error, results) {
+        if (error) {
+            console.log('err: ', error);
+            return res.send("error happened when update profile");
+        }
+        console.log('results from kafka: ', results);
+        if (!results) {
+            console.log('no result after update profile');
+            return res.send('db query return no result');
+        }
+        console.log('kafka received normal with profile update ', results);
+        return res.send('profile has been updated');
+    })
 }
