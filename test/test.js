@@ -36,7 +36,7 @@ describe('mocha test for API', function () {
         })
     })
 
-    describe('return profile info from /postproject', function() {
+    describe('return project info from /postproject', function() {
         it('return project', function (done) {
             request.post({
                 url: baseUrl + '/login',
@@ -51,7 +51,7 @@ describe('mocha test for API', function () {
         })
     })
 
-    describe('return profile info from /getbidlist', function() {
+    describe('return bidlist info from /getbidlist', function() {
         it('return bidlist', function (done) {
             request.post({
                 url: baseUrl + '/login',
@@ -66,7 +66,7 @@ describe('mocha test for API', function () {
         })
     })
 
-    describe('return profile info from /allprojects', function() {
+    describe('return all projects info from /allprojects', function() {
         it('return all projects', function (done) {
             request.post({
                 url: baseUrl + '/login',
