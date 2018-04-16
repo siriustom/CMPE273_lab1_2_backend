@@ -5,7 +5,6 @@ module.exports.postproject = function(req, res) {
     console.log('user has post project');
     var post = req.body;
     var fileName = post.fileName;
-    var period = (new Date()).getTime() + 24 * 60 * 60 * 1000 * post.period;
     var content = {
         userId: post.userId,
         name: post.name,
@@ -14,7 +13,7 @@ module.exports.postproject = function(req, res) {
         description: post.description,
         skillsRequired: post.skillsRequired,
         budgetRange: post.budgetRange,
-        period: period,
+        period: post.period,
         averageBid: "",
         bidNumber: "",
         bidNow: ""
