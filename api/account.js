@@ -96,11 +96,4 @@ module.exports.updateUser = function (req, res) {
             res.send(message);
         }
     }
-    // var sql = 'UPDATE account SET email = ?, password = ?, name = ?, image = ?, phone = ?, about_me = ?, skills = ? WHERE id = ?';
-    // var values = [data.email, data.password, data.name, data.filename, data.phone, data.about, data.skills, data.id];
-    // dbUtil.updateDate(sql, values, function (err, result) {
-    //     if (err) throw err;
-    //     var success = {status: 'ok'};
-    //     res.json(JSON.stringify(success));
-    // })
 }
