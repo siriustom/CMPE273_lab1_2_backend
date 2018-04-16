@@ -44,15 +44,15 @@ module.exports.addUser = function(req, res) {
             kafka.makeRequest('register', content, function (error, results) {
                 if (error) {
                     console.log('err: ', error);
-                    return res.send("error happened when post project");
+                    return res.send("error happened when register");
                 }
                 console.log('results from kafka: ', results);
                 if (!results) {
-                    console.log('no result after post project');
+                    console.log('no result after registert');
                     return res.send('db query return no result');
                 }
-                console.log('kafka received normal with project ', results);
-                return res.send('project has been posted');
+                console.log('kafka received normal with register ', results);
+                return res.send('user has been signed up');
             })
         });
     } else {
