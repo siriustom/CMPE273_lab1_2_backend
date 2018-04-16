@@ -7,7 +7,7 @@ module.exports = function(passport) {
         usernameField: 'email',
         passwordField: 'password'
     },
-        function(username, password, done) {
+        function(username, password, done) {//done is passport verify callback
         console.log('in passport');
         var content = {
             username: username,
